@@ -2,22 +2,22 @@ name: keepalive
 
 on:
   schedule:
-      - cron: '*/12 * * * *'
-        workflow_dispatch:
+    - cron: '*/12 * * * *'
+  workflow_dispatch:
 
-        permissions: {}
+permissions: {}
 
-        concurrency:
-          group: keepalive
-            cancel-in-progress: false
+concurrency:
+  group: keepalive
+  cancel-in-progress: false
 
-            jobs:
-              ping:
-                  runs-on: ubuntu-latest
-                      timeout-minutes: 5
-                          steps:
-                                - name: Ping Reciprocal Ruler health endpoint
-                                        run: |
-                                                  set -euo pipefail
-                                                            code=$(curl -fsS --max-time 55 -o /dev/null -w '%{http_code}' https://reciprocla-ruler-x402.onrender.com/health)
-                                                                      echo "HTTP ${code}"
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Reciprocal Ruler health endpoint
+        run: |
+          set -euo pipefail
+          code=$(curl -fsS --max-time 55 -o /dev/null -w '%{http_code}' https://reciprocla-ruler-x402.onrender.com/health)
+          echo "HTTP ${code}"
